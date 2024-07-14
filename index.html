@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QLC+ Toolkit</title>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+    <script src="ui.js"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <span class="title">QLC+ Toolkit</span>
+        <div>
+            <button class="button" id="btn-open" onclick="openFile()">Open</button>
+            <span style="display: none;" id="txt-filename">filename</span>
+            <button class="button" style="display: none;" id="btn-save">Save</button>
+        </div>
+    </header>
+    <main>
+        main
+    </main>
+    <div id="sidebar">
+        <span>File Data</span>
+        <pre id="file-data"></pre>
+    </div>
+    <input type="file" name="qlcfile" id="qlcfile" accept=".qxw" style="display: none;" onchange="loadFile(event)">
+</body>
+</html>
