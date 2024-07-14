@@ -24,7 +24,7 @@ body {
     grid-template-areas: 
         "header header header"
         "main fixtures sidebar";
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto 1fr;
     gap: 1em;
 }
@@ -48,9 +48,7 @@ main {
     border-radius: 0.5em;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     gap: 0.5em;
-
 }
 
 #sidebar {
@@ -79,6 +77,16 @@ pre {
 .title {
     font-size: 1.5em;
     font-weight: bold;
+}
+
+.indented {
+    padding-left: 1em;
+}
+
+.indented::before {
+    content: '▲';
+    margin-right: 0.5em;
+    color: var(--accent);
 }
 
 .button {
