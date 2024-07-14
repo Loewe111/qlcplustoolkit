@@ -4,6 +4,11 @@
     --primary: #ffd42a;
     --secondary: #364e5e;
     --accent: #f9ce20;
+    --pad: 0.5em;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
@@ -11,18 +16,48 @@ body {
     background-color: var(--background);
     color: var(--text);
     margin: 0;
-    padding: 0;
+    padding: var(--pad);
+    height: 100vh;
+    display: grid;
+    grid-template-areas: 
+        "header header"
+        "main sidebar";
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 1em;
 }
 
 header {
-    margin: 0.5em;
-    padding: 0.5em;
+    grid-area: header;
+    padding: var(--pad);
     outline: 1px solid var(--primary);
     border-radius: 0.5em;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1em;
+    justify-content: space-between;
+    gap: 2em;
+}
+
+main {
+    grid-area: main;
+    padding: var(--pad);
+    outline: 1px solid var(--primary);
+    border-radius: 0.5em;
+}
+
+#sidebar {
+    background-color: var(--secondary);
+    grid-area: sidebar;
+    padding: var(--pad);
+    outline: 1px solid var(--primary);
+    border-radius: 0.5em;
+    overflow-y: auto;
+}
+
+pre {
+    font-family: 'Consolas', monospace;
+    font-size: .8em;
 }
 
 .title {
@@ -31,9 +66,11 @@ header {
 }
 
 .button {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1em;
     background-color: var(--primary);
     color: var(--background);
-    padding: 0.5em;
+    padding: var(--pad);
     border: none;
     border-radius: 0.5em;
     cursor: pointer;
