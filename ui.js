@@ -6,7 +6,6 @@ const parser = new QLCParser((content) => {
 function loadFile(event) {
     let fileInput = event.target;
     let file = fileInput.files[0];
-    console.log(file);
 
     $('#btn-open').hide();
     $('#txt-filename').text(file.name).show();
@@ -33,7 +32,6 @@ function updateFixtures() {
     $('#fixtures').empty();
     let fixtures = parser.fixtureList;
     for (let fixture of fixtures) {
-        console.log(fixture);
         let name = fixture.querySelector('Name').textContent;
         let id = fixture.querySelector('ID').textContent;
         let address = fixture.querySelector('Address').textContent;
@@ -47,3 +45,30 @@ function updateFixtures() {
         $('#fixtures').append(fixtureHTML);
     }
 }
+
+function saveAs(blob, filename) {
+    let url = URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+$(document).ready(function() {
+    $('#btn-sort-fixtures').click(function() {
+        parser.sortFixtures();
+        updateFixtures();
+    });
+
+    $('#btn-save').click(function() {
+        let content = $('#file-data').text();
+        let filename = $('#txt-filename').text();
+        let blob = new Blob([content], {type: 'text/xml'});
+        saveAs(blob, filename);
+    });
+
+    $('#btn-update-groups').click(function() {
+        parser.updateChannelgroups();
+    });
+});
