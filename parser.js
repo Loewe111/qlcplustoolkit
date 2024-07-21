@@ -18,8 +18,8 @@ class QLCParser {
     }
 
     set fixtureList(fixtures) {
-        let parent = this.xml.querySelector('Fixture').parentNode;
-        this.xml.querySelectorAll('Fixture').forEach((fixture) => {
+        let parent = this.xml.querySelector('Engine');
+        this.xml.querySelectorAll('Engine > Fixture').forEach((fixture) => {
             fixture.remove();
         });
         for (let fixture of fixtures) {
@@ -29,7 +29,7 @@ class QLCParser {
     }
 
     get fixtureList() {
-        return this.xml.querySelectorAll('Fixture');
+        return this.xml.querySelectorAll('Engine > Fixture');
     }
 
     updateContent() {
@@ -116,7 +116,7 @@ class QLCParser {
     }
 
     get functionTree() {
-        let xmlfunctions = this.xml.querySelectorAll('Function');
+        let xmlfunctions = this.xml.querySelectorAll('Engine > Function');
         let functions = {};
         for (let xmlfunction of xmlfunctions) {
             let type = xmlfunction.getAttribute('Type');
@@ -146,13 +146,13 @@ class QLCParser {
     }
 
     renameFunction(id, name) {
-        let functionElement = this.xml.querySelector(`Function[ID="${id}"]`);
+        let functionElement = this.xml.querySelector(`Engine > Function[ID="${id}"]`);
         functionElement.setAttribute('Name', name);
         this.updateContent();
     }
 
     addFolderInFunctionName(folderPath, folderName) {
-        let functionElements = this.xml.querySelectorAll(`Function[Path="${folderPath}"]`);
+        let functionElements = this.xml.querySelectorAll(`Engine > Function[Path="${folderPath}"]`);
         for (let functionElement of functionElements) {
             let name = functionElement.getAttribute('Name');
             if (name.includes(folderName)) {

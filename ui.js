@@ -59,7 +59,7 @@ function updateFunctions() {
 }
 
 function createFolder(obj, name, path) {
-    let folderHTML = $(`<div class="function-folder f"><span class="folder-name"><span class="arrow"></span>${name}</span></div>`);
+    let folderHTML = $(`<div class="function-folder f collapsed"><span class="folder-name"><span class="arrow"></span>${name}</span></div>`);
     Object.entries(obj).forEach(([name, value]) => {
         if (typeof value === 'object') {
             folderHTML.append(createFolder(value, name, path.concat([name])));
