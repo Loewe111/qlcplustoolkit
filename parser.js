@@ -85,6 +85,36 @@ class QLCParser {
         this.updateContent();
     }
 
+    updateChannelgroupsSingle(id) {
+        let channelgroups = this.xml.querySelectorAll('ChannelsGroup');
+        let scenes = this.xml.querySelectorAll('Function[Type="Scene"]:has(ChannelGroupsVal)');
+        
+        for (let scene of scenes) {
+            let channelgroupsVal = scene.querySelector('ChannelGroupsVal');
+            let values = this.seperateIndexValue(channelgroupsVal.textContent);
+            let fixtureValues = scene.querySelectorAll(`Function[ID="${id}"] > FixtureVal`);
+            for (let fixtureValue of fixtureValues) {
+                fixtureValue.remove();
+            }
+
+            Object.entries(values).forEach(([fixturegroupid, value]) => {
+                let devices = this.seperateIndexValue(channelgroups[fixturegroupid].textContent);
+                Object.entries(devices).forEach(([deviceid, channel]) => {
+                    let fixtureValue = scene.querySelector(`FixtureVal[ID="${deviceid}"]`) || this.xml.createElement('FixtureVal');
+                    fixtureValue.setAttribute('ID', deviceid);
+                    if (fixtureValue.textContent) {
+                        fixtureValue.textContent += ',';
+                    }
+                    fixtureValue.textContent += `${channel},${value}`;
+                    scene.appendChild(fixtureValue);
+                });
+            });
+
+        }
+
+        this.updateContent();
+    }
+
     get functionTree() {
         let xmlfunctions = this.xml.querySelectorAll('Function');
         let functions = {};

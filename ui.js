@@ -126,6 +126,10 @@ $(document).ready(function() {
     $('#btn-update-groups').click(function() {
         parser.updateChannelgroups();
     });
+    
+    $('#btn-update-groups-single').click(function() {
+        parser.updateChannelgroupsSingle(selectedFunction);
+    });
 
     $('#btn-add-foldername').click(function() {
         let path = selectedPath.slice(1).join('/');
