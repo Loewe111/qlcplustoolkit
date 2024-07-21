@@ -114,4 +114,22 @@ class QLCParser {
         }
         return functions;
     }
+
+    renameFunction(id, name) {
+        let functionElement = this.xml.querySelector(`Function[ID="${id}"]`);
+        functionElement.setAttribute('Name', name);
+        this.updateContent();
+    }
+
+    addFolderInFunctionName(folderPath, folderName) {
+        let functionElements = this.xml.querySelectorAll(`Function[Path="${folderPath}"]`);
+        for (let functionElement of functionElements) {
+            let name = functionElement.getAttribute('Name');
+            if (name.includes(folderName)) {
+                continue;
+            }
+            functionElement.setAttribute('Name', `${folderName}/${name}`);
+        }
+        this.updateContent();
+    }
 }

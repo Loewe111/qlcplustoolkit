@@ -51,6 +51,12 @@ main {
     gap: 0.5em;
 }
 
+.operations {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
 #sidebar {
     background-color: var(--secondary);
     grid-area: sidebar;
@@ -176,16 +182,25 @@ pre {
     user-select: none;
 }
 
+.function-folder.selected > :first-child {
+    background-color: var(--primary);
+    color: var(--background);
+}
+
+.function-folder > :first-child > .arrow {
+    height: 1em;
+    width: 1em;
+}
+
 .function-folder > :first-child > .arrow::after {
     content: '▼';
     margin-right: 0.5em;
-    color: var(--accent);
+    color: currentColor;
 }
 
 .function-folder.collapsed > :first-child > .arrow::after {
     content: '▲';
     margin-right: 0.5em;
-    color: var(--accent);
 }
 
 .function-folder > :first-child {

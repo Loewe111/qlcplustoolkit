@@ -3,6 +3,9 @@ const parser = new QLCParser((content) => {
     $('#file-data').text(content);
 });
 
+var selectedPath = [];
+var selectedFunction = null;
+
 function loadFile(event) {
     let fileInput = event.target;
     let file = fileInput.files[0];
@@ -56,29 +59,46 @@ function updateFunctions() {
 }
 
 function createFolder(obj, name, path) {
-    let folderHTML = $(`<div class="function-folder"><span class="folder-name"><span class="arrow"></span>${name}</span></div>`);
+    let folderHTML = $(`<div class="function-folder f"><span class="folder-name"><span class="arrow"></span>${name}</span></div>`);
     Object.entries(obj).forEach(([name, value]) => {
         if (typeof value === 'object') {
             folderHTML.append(createFolder(value, name, path.concat([name])));
         } else {
-            let functionHTML = $(`<div class="function"><span>${value}</span><span>${name}</span></div>`);
+            let functionHTML = $(`<div class="function f"><span>${value}</span><span>${name}</span></div>`);
             folderHTML.append(functionHTML);
             functionHTML.click((event) => selectFunction(event, value, path.concat([name])));
         }
     });
-    $(folderHTML).children('.folder-name').click(toggleFolder);
+    $(folderHTML).children('.folder-name').click((event) => selectFunction(event, undefined, path));
+    $(folderHTML).children('.folder-name').children('.arrow').click(toggleFolder);
     return folderHTML;
 }
 
 function toggleFolder(event) {
     let folder = $(event.target).closest('.function-folder');
     folder.toggleClass('collapsed');
+    if (folder.hasClass('selected') || folder.find('.selected').length > 0) {
+        unselect();
+    }
 }
 
 function selectFunction(event, id, path) {
-    $('.function').removeClass('selected');
-    $(event.target).closest('.function').addClass('selected');
+    if (event.target.classList.contains('arrow')) return;
+    $('#operations-selection').show();
+    $('.f').removeClass('selected');
+    $(event.target).closest('.f').addClass('selected');
+    $('#operations-function').toggle(id !== undefined);
+    $('#operations-folder').toggle(id === undefined);
     console.log(id, path);
+    selectedFunction = id;
+    selectedPath = path;
+}
+
+function unselect() {
+    $('#operations-selection').hide();
+    $('.f').removeClass('selected');
+    selectedFunction = null;
+    selectedPath = [];
 }
 
 function saveAs(blob, filename) {
@@ -105,6 +125,13 @@ $(document).ready(function() {
 
     $('#btn-update-groups').click(function() {
         parser.updateChannelgroups();
+    });
+
+    $('#btn-add-foldername').click(function() {
+        let path = selectedPath.slice(1).join('/');
+        let foldername = selectedPath[selectedPath.length - 1];
+        parser.addFolderInFunctionName(path, foldername);
+        updateFunctions();
     });
 
     $('#tab-fixtures').click(function() {
