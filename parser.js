@@ -84,4 +84,34 @@ class QLCParser {
 
         this.updateContent();
     }
+
+    get functionTree() {
+        let xmlfunctions = this.xml.querySelectorAll('Function');
+        let functions = {};
+        for (let xmlfunction of xmlfunctions) {
+            let type = xmlfunction.getAttribute('Type');
+            let name = xmlfunction.getAttribute('Name');
+            let id = xmlfunction.getAttribute('ID');
+            let path = xmlfunction.getAttribute('Path') || '';
+
+            let functionType = functions[type] || {};
+            let pathArray = path.split('/');
+            if (pathArray[0] === '') {
+                pathArray.shift();
+            }
+
+            let current = functionType;
+            for (let i = 0; i < pathArray.length; i++) {
+                let pathPart = pathArray[i];
+                if (!current[pathPart]) {
+                    current[pathPart] = {};
+                }
+                current = current[pathPart];
+            }
+
+            current[name] = id;
+            functions[type] = functionType;
+        }
+        return functions;
+    }
 }

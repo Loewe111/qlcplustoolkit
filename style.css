@@ -23,7 +23,7 @@ body {
     display: grid;
     grid-template-areas: 
         "header header header"
-        "main fixtures sidebar";
+        "main center sidebar";
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto 1fr;
     gap: 1em;
@@ -72,6 +72,21 @@ pre {
     overflow-y: auto;
 }
 
+#functions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    overflow-y: auto;
+}
+
+#center {
+    grid-area: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    overflow-y: auto;
+}
+
 /* 'Reusables' */
 
 .title {
@@ -114,4 +129,76 @@ pre {
     flex-direction: row;
     justify-content: space-between;
     gap: 0.5em;
+}
+
+.tabs {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}
+
+.tabs > * {
+    padding: var(--pad);
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    border: 1px solid var(--primary);
+}
+
+.tabs > *.active {
+    background-color: var(--primary);
+    color: var(--background);
+}
+
+.function {
+    padding: var(--pad);
+    background-color: var(--secondary);
+    border-radius: 0.5em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5em;
+    cursor: pointer;
+}
+
+.function.selected {
+    background-color: var(--primary);
+    color: var(--background);
+}
+
+.function-folder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    overflow-y: auto;
+    cursor: pointer;
+    user-select: none;
+}
+
+.function-folder > :first-child > .arrow::after {
+    content: '▼';
+    margin-right: 0.5em;
+    color: var(--accent);
+}
+
+.function-folder.collapsed > :first-child > .arrow::after {
+    content: '▲';
+    margin-right: 0.5em;
+    color: var(--accent);
+}
+
+.function-folder > :first-child {
+    font-weight: bold;
+    padding: var(--pad);
+    border: 1px solid var(--primary);
+    border-radius: 0.5em;
+}
+
+.function-folder > :not(:first-child) {
+    margin-left: 1em;
+}
+
+.function-folder.collapsed > :not(:first-child) {
+    display: none;
 }

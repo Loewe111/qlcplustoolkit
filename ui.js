@@ -26,6 +26,7 @@ function openFile() {
 
 function onFileLoaded() {
     updateFixtures();
+    updateFunctions();
 }
 
 function updateFixtures() {
@@ -44,6 +45,40 @@ function updateFixtures() {
         `;
         $('#fixtures').append(fixtureHTML);
     }
+}
+
+function updateFunctions() {
+    $('#functions').empty();
+    let functions = parser.functionTree;
+    Object.entries(functions).forEach(([name, folder]) => {
+        $('#functions').append(createFolder(folder, name, [name]));
+    });
+}
+
+function createFolder(obj, name, path) {
+    let folderHTML = $(`<div class="function-folder"><span class="folder-name"><span class="arrow"></span>${name}</span></div>`);
+    Object.entries(obj).forEach(([name, value]) => {
+        if (typeof value === 'object') {
+            folderHTML.append(createFolder(value, name, path.concat([name])));
+        } else {
+            let functionHTML = $(`<div class="function"><span>${value}</span><span>${name}</span></div>`);
+            folderHTML.append(functionHTML);
+            functionHTML.click((event) => selectFunction(event, value, path.concat([name])));
+        }
+    });
+    $(folderHTML).children('.folder-name').click(toggleFolder);
+    return folderHTML;
+}
+
+function toggleFolder(event) {
+    let folder = $(event.target).closest('.function-folder');
+    folder.toggleClass('collapsed');
+}
+
+function selectFunction(event, id, path) {
+    $('.function').removeClass('selected');
+    $(event.target).closest('.function').addClass('selected');
+    console.log(id, path);
 }
 
 function saveAs(blob, filename) {
@@ -70,5 +105,19 @@ $(document).ready(function() {
 
     $('#btn-update-groups').click(function() {
         parser.updateChannelgroups();
+    });
+
+    $('#tab-fixtures').click(function() {
+        $('#fixtures').show();
+        $('#functions').hide();
+        $('#tab-fixtures').addClass('active');
+        $('#tab-functions').removeClass('active');
+    });
+
+    $('#tab-functions').click(function() {
+        $('#fixtures').hide();
+        $('#functions').show();
+        $('#tab-fixtures').removeClass('active');
+        $('#tab-functions').addClass('active');
     });
 });
